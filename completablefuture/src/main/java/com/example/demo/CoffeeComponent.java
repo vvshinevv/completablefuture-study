@@ -74,6 +74,21 @@ public class CoffeeComponent implements CoffeeUseCase {
         );
     }
 
+    @Override
+    public CompletableFuture<Integer> getPriceAsync1(String name, int i) {
+        log.info("비동기 호출 방식으로 가격 조회 시작");
+
+        return CompletableFuture.supplyAsync(() -> {
+                    if (i == 5) {
+                        throw new RuntimeException();
+                    }
+                    log.info("supplyAsync");
+                    return coffeeRepository.getPriceByName(name);
+                },
+                threadPoolTaskExecutor
+        );
+    }
+
 
     @Override
     public CompletableFuture<Integer> getDiscountPriceAsync(Integer price) {
